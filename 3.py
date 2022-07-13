@@ -1,5 +1,11 @@
 tests = [
     {'data':
+        { 'lesson': [1, 30],
+            'pupil': [2, 6, 8, 10, 15, 20],
+            'tutor': [1, 7, 8, 18]},
+            'answer': 9
+    },
+    {'data':
         { 'lesson': [1594663200, 1594666800],
             'pupil': [1594663340, 1594663389, 1594663390, 1594663395, 1594663396, 1594666472],
             'tutor': [1594663290, 1594663430, 1594663443, 1594666473]},
@@ -18,6 +24,41 @@ tests = [
     'answer': 3565
     },
 ]
+
+def appearance(intervals):
+    result = []
+    answer = 0
+
+    len_pupil = len(intervals['pupil'])
+    len_tutor = len(intervals['tutor'])
+
+    # обход списка учеников
+    for a in range(1, len_pupil, 2):
+        start_a = intervals['pupil'][a - 1]
+        end_a = intervals['pupil'][a]
+
+        # обход списка преподов
+        for b in range(1, len_tutor, 2):
+            start_b = intervals['tutor'][b - 1]
+            end_b = intervals['tutor'][b]
+
+            # проверка на персечение
+            if start_a < end_b and end_a > start_b:
+
+                # ищем начало пересечения
+                if start_a > start_b: result.append(start_a)
+                else: result.append(start_b)
+
+                # ищем конец пересечения
+                if end_a > end_b: result.append(end_b)
+                else: result.append(end_a)
+
+    # подсчет суммарного времени
+    for r in range(1, len(result), 2):
+        answer = answer + (result[r] - result[r-1])
+
+    return answer
+
 
 if __name__ == '__main__':
    for i, test in enumerate(tests):
